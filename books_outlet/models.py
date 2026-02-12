@@ -4,7 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Country(models.Model):
     name = models.CharField(max_length=100)
-    code = models.CharField(    =2)
+    code = models.CharField(max_length=2)
 
     def __str__(self):
         return self.name
@@ -26,7 +26,7 @@ class Books(models.Model):
         MaxValueValidator(5)
     ])
     slug = models.SlugField()
-    author = models.ForeignKey(Author, on_delete=models.SET_NULL, related_name='books')
+    author = models.ForeignKey(Author, models.SET_NULL, null=True , related_name='books')
     published_countries = models.ManyToManyField(Country)
 
 
