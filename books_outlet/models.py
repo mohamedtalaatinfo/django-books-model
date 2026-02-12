@@ -8,6 +8,9 @@ class Country(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name_plural = "Countries"
 
 
 class Author(models.Model):
@@ -18,6 +21,8 @@ class Author(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
+
+
 class Books(models.Model):
     title = models.CharField(max_length=100)
     brief = models.CharField(max_length=250)
@@ -26,9 +31,16 @@ class Books(models.Model):
         MaxValueValidator(5)
     ])
     slug = models.SlugField()
-    author = models.ForeignKey(Author, models.SET_NULL, null=True , related_name='books')
+    is_bestseller = models.BooleanField(default=False)
+
+    author = models.ManyToManyField(Author)
     published_countries = models.ManyToManyField(Country)
+
 
 
     def __str__(self):
         return f"{self.title} -- {self.author}"
+
+
+    class Meta:
+        verbose_name_plural = "Books"
