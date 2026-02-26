@@ -2,7 +2,7 @@
 {% load static %}
 
 
-{% block page_title %} {{ book.title|title }} {% endblock %}
+{% block page_title %} {{ object.title|title }} {% endblock %}
 {% block page_style %} 
 <link rel="stylesheet" href="{% static "books_outlet/book_details.css" %}">
 {% endblock %}
@@ -11,7 +11,8 @@
 {% block content %}
 
     <header>
-        <h1> {{ book.title|title }} </h1>
+        <h1> {{ object.title|title }} </h1>
+        <h3><a href="{% url "home" %}">Home Page</a></h3>
     </header>
 
     <div class='container'>
@@ -19,12 +20,12 @@
 
         <div class='sub-container'>
             <h2>About Book</h2>
-            <p> {{ book.brief|title }} </p>
+            <p> {{ object.brief|title }} </p>
             <hr> 
 
             <h2>Authors</h2>
             <ul style='list-style-type: decimal;'>
-            {% for each in book.author.all %}
+            {% for each in object.author.all %}
                 
                 <li> {{ each|title }} </li>
 
@@ -34,10 +35,10 @@
 
 
 
-            <h3> Book rating: {{ book.rating }} </h3>
+            <h3> Book rating: {{ object.rating }} </h3>
             <hr>
 
-            {% if book.is_bestseller %}
+            {% if object.is_bestseller %}
                 <h3> Best Seller: ✅ </h3>
 
             {% else %}
@@ -50,14 +51,36 @@
 
             <h3> Published at </h3>
             <ul>
-                {% for ct in book.published_countries.all %}
+                {% for ct in object.published_countries.all %}
                     <li> {{ ct|title }} </li>
                 {% endfor %}
             </ul>
+
+
+            <hr>
+            {% if not is_fav %}
+
+            <h3>Add to Favorite</h3>
+            <form action="{% url "fav-book" %}" method="post" >
+                {% csrf_token %}
+                <input type="hidden" name="review_id" value="{{ object.pk }}">
+                <button type="submit" >Favorit</button>
+
+                
+            </form>
+
+
+            {% else %}
+            <h3>That is your favorite book</h3>
+
+            {% endif %}
+
+            
         
         </div> 
 
 
+        
 
     </div>
 
